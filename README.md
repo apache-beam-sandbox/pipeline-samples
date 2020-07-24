@@ -1,18 +1,22 @@
 # pipeline-samples
-
+These are simple exercises where there are pipelines and functions defined, that explore the usage of Apache Beam
 
 ## Run on local
 
 ```
 mvn package
-java -jar ./target/pipeline-samples-0.1-shaded.jar
+java -jar target/pipelines-samples-0.1-shaded.jar
 ```
 
 ## Run on Google Dataflow
 ```
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/{user}/{somePath}/XXX_credentials.json"
+gcloud auth application-default login
 mvn package -Pdataflow-runner
-java -jar ./target/pipeline-samples-0.1-shaded.jar --runner=DataflowRunner --project=xxxx --tempLocation=gs://<YOUR_GCS_BUCKET>/temp/
+java -jar target/pipelines-samples-0.1-shaded.jar --runner=DataflowRunner --project=deloitte-beam-284202 --tempLocation=gs://deloitte-beam-sandbox/temp/ --region=us-west1
 ```
+
+gsutil acl set public-read-write gs://deloitte-beam
 
 ## Run on Amazon EMR (Flink)
 ```
@@ -22,6 +26,6 @@ scp -i ~/.ssh/keypair.pem ./target/pipeline-samples-0.1-shaded.jar ec2-user@ec2-
 
 ## Run on local Flink Cluster
 ```
-JAR :command-runner.jar
-./bin/flink run /Users/{UserName}/Projects/pipeline-samples/target/pipeline-samples-0.1--shaded.jar  --runner=FlinkRunner
+mvn package -Pflink-runner
+./bin/flink run /Users/user}/{somePath}/pipeline-samples/target/pipelines-samples-0.1-shaded.jar --runner=FlinkRunner
 ```

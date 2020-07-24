@@ -17,10 +17,13 @@ import com.deloitte.apache.beam.functions.CreateKeyFn;
 import com.deloitte.apache.beam.functions.ExtractWordsFn;
 import com.deloitte.apache.beam.functions.FormatAsTextFn;
 import com.deloitte.apache.beam.functions.ResultsAsKeyValueFn;
+import org.apache.log4j.BasicConfigurator;
 
 public class GroupedWordCount {
     
 	public static void main(String[] args) {
+		
+		BasicConfigurator.configure();
         
 		PipelineOptions options = PipelineOptionsFactory.fromArgs(args)
         		.withValidation()
