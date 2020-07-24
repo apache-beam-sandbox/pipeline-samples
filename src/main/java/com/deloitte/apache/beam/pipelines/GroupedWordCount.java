@@ -37,14 +37,14 @@ public class GroupedWordCount {
                 		+ "and after that day, and a day, and a day, and a day, and a day,"
                 		+ "and a day, another week !"
                 		+ "the week prior, there were a series of days, the days turn into weeks,"
-                		+ "how time just goes when one thinks of days and weeks")
+                		+ "how time just goes by when one thinks of days and weeks")
                 .withCoder(StringUtf8Coder.of()))
-                .apply(ParDo.of(new ExtractWordsFn()))
-                .apply(Count.perElement())
-                .apply(ParDo.of(new ResultsAsKeyValueFn()))
-                .apply("CreateKey", MapElements.via(new CreateKeyFn()))
-                .apply(GroupByKey.create())
-                .apply(SortValues.create(bufferedOptions))
+                .apply("Extract Words",ParDo.of(new ExtractWordsFn()))
+                .apply("Count Words",Count.perElement())
+                .apply("Create a Key Value List of words and counts", ParDo.of(new ResultsAsKeyValueFn()))
+                .apply("Create Keys", MapElements.via(new CreateKeyFn()))
+                .apply("Group by Words",GroupByKey.create())
+                .apply("Buffered Sort",SortValues.create(bufferedOptions))
                 .apply("FormatResults", MapElements.via(new FormatAsTextFn()))
                 .apply("WriteCounts", TextIO.write().withNumShards(1).to("grouped-word-count"));
         
