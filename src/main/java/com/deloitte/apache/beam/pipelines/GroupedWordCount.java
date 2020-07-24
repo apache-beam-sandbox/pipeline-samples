@@ -28,9 +28,8 @@ public class GroupedWordCount {
 		PipelineOptions options = PipelineOptionsFactory.fromArgs(args)
         		.withValidation()
         		.create();
-        
+		Pipeline pipeline = Pipeline.create(options);
         BufferedExternalSorter.Options bufferedOptions = BufferedExternalSorter.options();
-        Pipeline pipeline = Pipeline.create(options);
         
         pipeline.apply("ReadLines",
                 Create.of("this is a new day of the week, the next day there will be another day,"
@@ -38,6 +37,7 @@ public class GroupedWordCount {
                 		+ "and a day, another week !"
                 		+ "the week prior, there were a series of days, the days turn into weeks,"
                 		+ "how time just goes by when one thinks of days and weeks")
+                
                 .withCoder(StringUtf8Coder.of()))
                 .apply("Extract Words",ParDo.of(new ExtractWordsFn()))
                 .apply("Count Words",Count.perElement())

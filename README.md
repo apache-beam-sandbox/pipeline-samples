@@ -8,6 +8,13 @@ mvn package
 java -jar target/pipelines-samples-0.1-shaded.jar
 ```
 
+## Run on local Flink cluster
+```
+mvn package -Pflink-runner
+cd flink/flink-1.11.0
+./bin/flink run /Users/user}/{somePath}/pipeline-samples/target/pipelines-samples-0.1-shaded.jar --runner=FlinkRunner
+```
+
 ## Run on Google Dataflow
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="/Users/{user}/{somePath}/XXX_credentials.json"
@@ -20,10 +27,4 @@ java -jar target/pipelines-samples-0.1-shaded.jar --runner=DataflowRunner --proj
 ```
 mvn package -Pflink-runner
 scp -i ~/.ssh/keypair.pem ./target/pipeline-samples-0.1-shaded.jar ec2-user@ec2-xxx-xxx-xxx:/home/hadoop
-```
-
-## Run on local Flink cluster
-```
-mvn package -Pflink-runner
-./bin/flink run /Users/user}/{somePath}/pipeline-samples/target/pipelines-samples-0.1-shaded.jar --runner=FlinkRunner
 ```
