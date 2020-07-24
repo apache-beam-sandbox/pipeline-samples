@@ -46,7 +46,7 @@ public class GroupedWordCount {
                 .apply("Group by Words",GroupByKey.create())
                 .apply("Buffered Sort",SortValues.create(bufferedOptions))
                 .apply("FormatResults", MapElements.via(new FormatAsTextFn()))
-                .apply("WriteCounts", TextIO.write().withNumShards(1).to("grouped-word-count"));
+                .apply("WriteCounts", TextIO.write().withNumShards(1).to("grouped-word-count.txt"));
         
         pipeline.run().waitUntilFinish();
     }
