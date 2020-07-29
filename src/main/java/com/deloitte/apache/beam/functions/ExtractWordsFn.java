@@ -9,8 +9,7 @@ public class ExtractWordsFn extends DoFn<String, String> {
 
   private static final long serialVersionUID = 1L;
   private final Counter emptyLines = Metrics.counter(ExtractWordsFn.class, "emptyLines");
-  private final Distribution lineLenDist =
-      Metrics.distribution(ExtractWordsFn.class, "lineLenDistro");
+  private final Distribution lineLenDist = Metrics.distribution(ExtractWordsFn.class, "lineLenDistro");
 
   @ProcessElement
   public void processElement(@Element String element, OutputReceiver<String> receiver) {
