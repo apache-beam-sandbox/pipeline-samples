@@ -72,22 +72,29 @@
 			<artifactId>beam-sdks-java-core</artifactId>
 			<version>${beam.version}</version>
 		</dependency>
-		
+
 		<!-- Beam Extensions -->
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-sdks-java-extensions-sorter</artifactId>
 			<version>${beam.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-sdks-java-extensions-join-library</artifactId>
 			<version>${beam.version}</version>
 		</dependency>
-		
+
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro-protobuf</artifactId>
+			<version>1.10.0</version>
+		</dependency>
+
 		<!-- Beam ParquetIO -->
-		
+
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-sdks-java-io-parquet</artifactId>
@@ -107,21 +114,21 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		
+
+
 		<!-- For spanner -->
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>
 			<version>${beam.version}</version>
-			
-			<exclusions> 
-				<exclusion> 
-				<groupId>com.google.api.grpc</groupId> 
-				<artifactId>grpc-google-common-protos</artifactId> 
-				</exclusion> 
-			</exclusions> 
-				
+
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.api.grpc</groupId>
+					<artifactId>grpc-google-common-protos</artifactId>
+				</exclusion>
+			</exclusions>
+
 		</dependency>
 
 		<!-- For GCS -->
@@ -152,25 +159,25 @@
 			<artifactId>gax</artifactId>
 			<version>1.40.0</version>
 		</dependency>
-		
-		
+
+
 		<!-- Local runner -->
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-runners-direct-java</artifactId>
 			<version>${beam.version}</version>
 		</dependency>
-		
-		
+
+
 		<!-- DataFlow runner -->
-		
+
 		<dependency>
 			<groupId>org.apache.beam</groupId>
 			<artifactId>beam-runners-google-cloud-dataflow-java</artifactId>
 			<version>${beam.version}</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -188,24 +195,24 @@
 			<artifactId>hadoop-mapreduce-client-core</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-		
-		
+
+
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>1.8</version>
 		</dependency>
-		
-		
-		
+
+
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.30</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
