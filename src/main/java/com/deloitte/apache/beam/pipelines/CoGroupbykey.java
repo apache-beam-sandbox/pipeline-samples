@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.DoFn;
@@ -15,15 +14,15 @@ import org.apache.beam.sdk.transforms.join.KeyedPCollectionTuple;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TupleTag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CoGroupbykey {
+	static final Logger log = LoggerFactory.getLogger(CoGroupbykey.class);
 
 	public static void main(String args[]) {
 
-		Pipeline p = Pipeline.create(PipelineOptionsFactory
-						.fromArgs(args)
-						.withValidation()
-						.create());
+		Pipeline p = Pipeline.create(PipelineOptionsFactory.fromArgs(args).withValidation().create());
 
 		final List<KV<String, String>> emailsList = Arrays.asList(KV.of("amy", "amy@example.com"),
 				KV.of("carl", "carl@example.com"), KV.of("julia", "julia@example.com"),
@@ -41,9 +40,7 @@ public class CoGroupbykey {
 		PCollection<KV<String, CoGbkResult>> results = KeyedPCollectionTuple.of(emailsTag, emails)
 				.and(phonesTag, phones).apply(CoGroupByKey.create());
 
-		
-
-		/* PCollection<String> contactLines = */ results.apply(ParDo.of(new DoFn<KV<String, CoGbkResult>, String>() {
+		PCollection<String> contactLines = results.apply(ParDo.of(new DoFn<KV<String, CoGbkResult>, String>() {
 
 			@ProcessElement
 			public void processElement(ProcessContext c) {
@@ -53,15 +50,29 @@ public class CoGroupbykey {
 				Iterable<String> allStrings = result.getAll(emailsTag);
 				Iterable<String> allStrings2 = result.getAll(phonesTag);
 				c.output(key + ";" + allStrings + " ; " + allStrings2);
-				// System.out.println(allStrings2);
-				// .output(output);
 
 			}
-		}))
+		}));
 
-				.apply(TextIO.write().to("./src/main/output/CogroupByOutput.txt").withNumShards(1));
+		contactLines.apply("debug", ParDo.of(new PrintDoFn<>("output ")));
 
 		p.run().waitUntilFinish();
 	}
 
+	/**
+	 * A simple DoFn that prints message to System.out
+	 */
+	private static class PrintDoFn<T> extends DoFn<T, Void> {
+		private static final long serialVersionUID = 1L;
+		private final String tag;
+
+		public PrintDoFn(String tag) {
+			this.tag = tag;
+		}
+
+		@ProcessElement
+		public void processElement(ProcessContext c) {
+			System.out.println(tag + ":" + c.element());
+		}
+	}
 }
